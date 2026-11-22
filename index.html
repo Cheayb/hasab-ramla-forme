@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#14304a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="حساب الرملة" />
+  <title>حساب الرملة للفورمة</title>
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="manifest" href="manifest.json" />
+  <style>
+    :root {
+      --bg: #f3f0e8;
+      --card: #ffffff;
+      --ink: #13293d;
+      --muted: #5c6b7a;
+      --primary: #14304a;
+      --primary-2: #1f4e78;
+      --accent: #c86d19;
+      --accent-soft: #fdf2e6;
+      --ok: #1b6e46;
+      --ok-soft: #eaf6ef;
+      --border: #dfd8ca;
+      --radius: 18px;
+      --shadow: 0 8px 24px rgba(19, 41, 61, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      padding: 0 0 36px 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Naskh Arabic", "Cairo", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .app-header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-2) 100%);
+      color: #fff;
+      padding: 18px 16px 22px;
+      border-bottom-left-radius: 24px;
+      border-bottom-right-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .header-row {
+      max-width: 540px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .app-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+      flex-shrink: 0;
+      background: var(--primary);
+    }
+
+    .app-title {
+      margin: 0;
+      font-size: 1.3rem;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+    }
+
+    .app-sub {
+      margin: 2px 0 0;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.86);
+    }
+
+    .container {
+      max-width: 540px;
+      margin: -12px auto 0;
+      padding: 0 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .result-card {
+      background: #fffdfb;
+      border: 2px solid var(--accent);
+    }
+
+    .result-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .result-label {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .badge {
+      background: var(--ok-soft);
+      color: var(--ok);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    .main-number {
+      font-size: 2.35rem;
+      font-weight: 900;
+      color: var(--accent);
+      margin: 6px 0 2px;
+      line-height: 1.15;
+    }
+
+    .sub-number {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+
+    .order-box {
+      background: var(--accent-soft);
+      border-right: 4px solid var(--accent);
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .stat-box {
+      background: #f8f6f0;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px;
+    }
+
+    .stat-title {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .stat-val {
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-top: 2px;
+    }
+
+    .section-title {
+      margin: 0 0 12px;
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .mode-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .mode-btn {
+      border: 1.5px solid var(--border);
+      background: #faf8f4;
+      color: var(--ink);
+      border-radius: 12px;
+      padding: 10px 8px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .mode-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .field-group {
+      margin-bottom: 12px;
+    }
+
+    .field-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 800;
+      margin-bottom: 5px;
+      color: var(--ink);
+    }
+
+    .hint {
+      font-size: 0.76rem;
+      color: var(--muted);
+      font-weight: 600;
+      margin-top: 3px;
+    }
+
+    input[type="number"], select {
+      width: 100%;
+      padding: 12px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--ink);
+      background: #fff;
+      border: 1.5px solid #c9c0b1;
+      border-radius: 12px;
+      outline: none;
+    }
+
+    input[type="number"]:focus, select:focus {
+      border-color: var(--primary-2);
+      box-shadow: 0 0 0 3px rgba(31, 78, 120, 0.14);
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .chip {
+      background: #f3f0e8;
+      border: 1px solid var(--border);
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .chip:active {
+      transform: scale(0.97);
+      background: var(--accent-soft);
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .btn {
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      cursor: pointer;
+      border: none;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: #ece7dc;
+      color: var(--ink);
+    }
+
+    .steps {
+      font-size: 0.88rem;
+      color: var(--ink);
+      background: #f8f6f0;
+      border-radius: 12px;
+      padding: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .steps div {
+      margin-bottom: 6px;
+    }
+
+    .steps div:last-child {
+      margin-bottom: 0;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary);
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      z-index: 99;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-row">
+      <img src="data:image/png;base64,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" alt="أيقونة حساب الرملة" class="app-icon" />
+      <div>
+        <h1 class="app-title">حساب الرملة للفورمة</h1>
+        <p class="app-sub">حساب كمية الرملة بالمتر المكعب للشانتي</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- بطاقة النتيجة -->
+    <section class="card result-card" aria-live="polite">
+      <div class="result-top">
+        <span class="result-label">الكمية المطلوبة من الرملة</span>
+        <span class="badge" id="modeBadge">رملة + سيما (80%)</span>
+      </div>
+
+      <div class="main-number" id="sandReserveVal">5.28 م³</div>
+      <div class="sub-number" id="sandNetVal">صافي الرملة: 4.80 م³</div>
+
+      <div class="order-box" id="orderAdvice">
+        اطلب في الشانتي: من 5.5 م³ حتى 6 م³ ديال الرملة باش تكمل الخدمة مرتاح.
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-title">حجم الفورمة الصافي</div>
+          <div class="stat-val" id="totalVolVal">6.00 م³</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-title">تقريباً بالبرويطة (≈ 0.06 م³)</div>
+          <div class="stat-val" id="brouetteVal">88 برويطة</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- إدخال المعطيات -->
+    <section class="card">
+      <h2 class="section-title">معطيات الفورمة</h2>
+
+      <div class="mode-switch">
+        <button type="button" class="mode-btn active" id="btnAreaMode" onclick="setAreaMode('area')">بالمساحة (م²)</button>
+        <button type="button" class="mode-btn" id="btnDimsMode" onclick="setAreaMode('dims')">بالطول × العرض</button>
+      </div>
+
+      <div id="areaInputBox" class="field-group">
+        <label for="areaInput">المساحة (متر مربع م²)</label>
+        <input type="number" id="areaInput" value="50" min="0.1" step="any" inputmode="decimal" />
+        <div class="chips">
+          <button type="button" class="chip" onclick="applyPreset(50, 12)">برطمة 50م² × 12سم</button>
+          <button type="button" class="chip" onclick="applyPreset(80, 10)">80م² × 10سم</button>
+          <button type="button" class="chip" onclick="applyPreset(25, 8)">25م² × 8سم</button>
+        </div>
+      </div>
+
+      <div id="dimsInputBox" class="field-group" style="display:none;">
+        <div class="field-row-2">
+          <div>
+            <label for="lengthInput">الطول (متر)</label>
+            <input type="number" id="lengthInput" value="10" min="0.1" step="any" inputmode="decimal" />
+          </div>
+          <div>
+            <label for="widthInput">العرض (متر)</label>
+            <input type="number" id="widthInput" value="5" min="0.1" step="any" inputmode="decimal" />
+          </div>
+        </div>
+      </div>
+
+      <div class="field-row-2">
+        <div class="field-group">
+          <label for="thicknessInput">سمك الفورمة (سم)</label>
+          <input type="number" id="thicknessInput" value="12" min="0.5" step="any" inputmode="decimal" />
+          <div class="hint">12 سم = 0.12 متر</div>
+        </div>
+
+        <div class="field-group">
+          <label for="reserveInput">الاحتياط والميلان (%)</label>
+          <input type="number" id="reserveInput" value="10" min="0" max="50" step="any" inputmode="decimal" />
+          <div class="hint">للهدر وتفاوت النيفو</div>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label for="mixTypeSelect">نوع الحساب / نسبة الرملة</label>
+        <select id="mixTypeSelect">
+          <option value="0.80" selected>فورمة رملة وسيما (نسبة الرملة ≈ 80%)</option>
+          <option value="1.00">الحجم الإجمالي للفورمة كرملة (100%)</option>
+          <option value="0.75">خليط أكثف سيما/حصى (نسبة الرملة ≈ 75%)</option>
+        </select>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn btn-primary" onclick="copySummary()">نسخ ملخص الطلب</button>
+        <button type="button" class="btn btn-secondary" onclick="resetForm()">إعادة ضبط</button>
+      </div>
+    </section>
+
+    <!-- تفاصيل الحساب -->
+    <section class="card">
+      <h2 class="section-title">تفاصيل الحساب</h2>
+      <div class="steps" id="calcSteps"></div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast">تم نسخ الملخص</div>
+
+  <script>
+    let areaMode = "area";
+
+    function setAreaMode(mode) {
+      areaMode = mode;
+      document.getElementById("btnAreaMode").classList.toggle("active", mode === "area");
+      document.getElementById("btnDimsMode").classList.toggle("active", mode === "dims");
+      document.getElementById("areaInputBox").style.display = mode === "area" ? "block" : "none";
+      document.getElementById("dimsInputBox").style.display = mode === "dims" ? "block" : "none";
+      calculate();
+    }
+
+    function applyPreset(area, cm) {
+      setAreaMode("area");
+      document.getElementById("areaInput").value = area;
+      document.getElementById("thicknessInput").value = cm;
+      calculate();
+    }
+
+    function resetForm() {
+      setAreaMode("area");
+      document.getElementById("areaInput").value = 50;
+      document.getElementById("lengthInput").value = 10;
+      document.getElementById("widthInput").value = 5;
+      document.getElementById("thicknessInput").value = 12;
+      document.getElementById("reserveInput").value = 10;
+      document.getElementById("mixTypeSelect").value = "0.80";
+      calculate();
+    }
+
+    function fmt(num, digits = 2) {
+      return Number(num).toFixed(digits);
+    }
+
+    function calculate() {
+      const thicknessCm = Math.max(0, parseFloat(document.getElementById("thicknessInput").value) || 0);
+      const reservePct = Math.max(0, parseFloat(document.getElementById("reserveInput").value) || 0);
+      const sandRatio = parseFloat(document.getElementById("mixTypeSelect").value) || 0.80;
+
+      let area = 0;
+      let areaDesc = "";
+      if (areaMode === "area") {
+        area = Math.max(0, parseFloat(document.getElementById("areaInput").value) || 0);
+        areaDesc = `${area} م²`;
+      } else {
+        const l = Math.max(0, parseFloat(document.getElementById("lengthInput").value) || 0);
+        const w = Math.max(0, parseFloat(document.getElementById("widthInput").value) || 0);
+        area = l * w;
+        areaDesc = `${l} م × ${w} م = ${fmt(area, 2)} م²`;
+      }
+
+      const thicknessM = thicknessCm / 100;
+      const totalVol = area * thicknessM;
+      const netSand = totalVol * sandRatio;
+      const sandWithReserve = netSand * (1 + reservePct / 100);
+
+      const minOrder = Math.max(0.5, (Math.floor(sandWithReserve * 2) / 2));
+      const maxOrder = Math.max(minOrder + 0.5, (Math.ceil(sandWithReserve * 2) / 2));
+      const brouettes = Math.ceil(sandWithReserve / 0.06);
+
+      const selectEl = document.getElementById("mixTypeSelect");
+      const modeText = sandRatio === 1.0 ? "حجم الفورمة كرملة (100%)" : `رملة + سيما (${Math.round(sandRatio * 100)}%)`;
+
+      document.getElementById("modeBadge").textContent = modeText;
+      document.getElementById("sandReserveVal").textContent = `${fmt(sandWithReserve, 2)} م³`;
+      document.getElementById("sandNetVal").textContent = `صافي الرملة: ${fmt(netSand, 2)} م³`;
+      document.getElementById("totalVolVal").textContent = `${fmt(totalVol, 2)} م³`;
+      document.getElementById("brouetteVal").textContent = `${brouettes} برويطة`;
+
+      document.getElementById("orderAdvice").textContent =
+        sandWithReserve > 0
+          ? `اطلب في الشانتي: من ${fmt(minOrder, 1)} م³ حتى ${fmt(maxOrder, 1)} م³ ديال الرملة باش تكمل الخدمة مرتاح.`
+          : "أدخل المساحة والسمك لحساب كمية الرملة.";
+
+      document.getElementById("calcSteps").innerHTML = `
+        <div>1. المساحة: <strong>${areaDesc}</strong></div>
+        <div>2. السمك بالمتر: ${thicknessCm} سم = <strong>${fmt(thicknessM, 2)} م</strong></div>
+        <div>3. الحجم الصافي للفورمة: ${fmt(area, 2)} × ${fmt(thicknessM, 2)} = <strong>${fmt(totalVol, 2)} م³</strong></div>
+        <div>4. الرملة الصافية (${Math.round(sandRatio * 100)}%): <strong>${fmt(netSand, 2)} م³</strong></div>
+        <div>5. مع الاحتياط (${reservePct}%): <strong>${fmt(sandWithReserve, 2)} م³</strong></div>
+      `;
+
+      window.__latestSummary =
+        `حساب الرملة للفورمة:
+` +
+        `المساحة: ${areaDesc} | السمك: ${thicknessCm} سم
+` +
+        `حجم الفورمة الصافي: ${fmt(totalVol, 2)} م³
+` +
+        `صافي الرملة: ${fmt(netSand, 2)} م³
+` +
+        `المطلوب مع الاحتياط (${reservePct}%): ${fmt(sandWithReserve, 2)} م³
+` +
+        `توصية الطلب: من ${fmt(minOrder, 1)} إلى ${fmt(maxOrder, 1)} م³`;
+    }
+
+    function copySummary() {
+      const txt = window.__latestSummary || "";
+      if (!txt) return;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(txt).then(showToast).catch(() => fallbackCopy(txt));
+      } else {
+        fallbackCopy(txt);
+      }
+    }
+
+    function fallbackCopy(txt) {
+      const ta = document.createElement("textarea");
+      ta.value = txt;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      showToast();
+    }
+
+    function showToast() {
+      const t = document.getElementById("toast");
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 1800);
+    }
+
+    ["areaInput", "lengthInput", "widthInput", "thicknessInput", "reserveInput", "mixTypeSelect"].forEach((id) => {
+      document.getElementById(id).addEventListener("input", calculate);
+      document.getElementById(id).addEventListener("change", calculate);
+    });
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("sw.js").catch(() => {});
+      });
+    }
+
+    calculate();
+  </script>
+</body>
+</html>
