@@ -41,6 +41,14 @@ jobs:
           npx cap add android
           npx cap sync android
 
+      - name: Replace Android app icons from www
+        run: |
+          for dir in android/app/src/main/res/mipmap-*; do
+            cp -f www/icon-192.png "$dir/ic_launcher.png" || true
+            cp -f www/icon-192.png "$dir/ic_launcher_round.png" || true
+            cp -f www/icon-512.png "$dir/ic_launcher_foreground.png" || true
+          done
+
       - name: Fix Kotlin stdlib dependency conflict
         run: |
           cat << 'EOF' >> android/app/build.gradle
