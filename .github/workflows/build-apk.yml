@@ -37,9 +37,22 @@ jobs:
         run: |
           npm init -y
           npm install @capacitor/core@6 @capacitor/cli@6 @capacitor/android@6
-          npx cap init "حساب الرملة" "ma.cheayb.ramlaforme" --web-dir www
+          cat << 'EOF' > capacitor.config.json
+          {
+            "appId": "ma.cheayb.ramlaforme",
+            "appName": "حساب الرملة",
+            "webDir": "www",
+            "server": {
+              "androidScheme": "https"
+            }
+          }
+          EOF
           npx cap add android
           npx cap sync android
+          echo "--- capacitor.config.json ---"
+          cat capacitor.config.json || true
+          echo "--- assets/public ---"
+          ls -la android/app/src/main/assets/public || true
 
       - name: Replace Android app icons from www
         run: |
