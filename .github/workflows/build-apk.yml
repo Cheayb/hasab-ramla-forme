@@ -43,10 +43,13 @@ jobs:
 
       - name: Replace Android app icons from www
         run: |
-          for dir in android/app/src/main/res/mipmap-*; do
-            cp -f www/icon-192.png "$dir/ic_launcher.png" || true
-            cp -f www/icon-192.png "$dir/ic_launcher_round.png" || true
-            cp -f www/icon-512.png "$dir/ic_launcher_foreground.png" || true
+          rm -f android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+          rm -f android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+          for dir in android/app/src/main/res/mipmap-hdpi android/app/src/main/res/mipmap-mdpi android/app/src/main/res/mipmap-xhdpi android/app/src/main/res/mipmap-xxhdpi android/app/src/main/res/mipmap-xxxhdpi; do
+            mkdir -p "$dir"
+            cp -f www/icon-192.png "$dir/ic_launcher.png"
+            cp -f www/icon-192.png "$dir/ic_launcher_round.png"
+            cp -f www/icon-512.png "$dir/ic_launcher_foreground.png"
           done
 
       - name: Fix Kotlin stdlib dependency conflict
