@@ -39,7 +39,7 @@ jobs:
           npm install @capacitor/core@6 @capacitor/cli@6 @capacitor/android@6
           npx cap init "حساب الرملة" "ma.cheayb.ramlaforme" --web-dir www
           npx cap add android
-          npx cap copy android
+          npx cap sync android
 
       - name: Fix Kotlin stdlib dependency conflict
         run: |
