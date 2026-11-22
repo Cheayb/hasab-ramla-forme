@@ -36,10 +36,23 @@ jobs:
           ANDROID_HOME: /usr/local/lib/android/sdk
         run: |
           npm init -y
-          npm install @capacitor/core @capacitor/cli @capacitor/android
+          npm install @capacitor/core@6 @capacitor/cli@6 @capacitor/android@6
           npx cap init "حساب الرملة" "ma.cheayb.ramlaforme" --web-dir www
           npx cap add android
           npx cap copy android
+
+      - name: Fix Kotlin stdlib dependency conflict
+        run: |
+          cat << 'EOF' >> android/app/build.gradle
+
+          configurations.all {
+            resolutionStrategy {
+              force 'org.jetbrains.kotlin:kotlin-stdlib:1.8.22'
+              force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22'
+              force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22'
+            }
+          }
+          EOF
 
       - name: Build Debug APK
         env:
